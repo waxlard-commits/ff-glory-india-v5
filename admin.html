@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FF Glory India Admin V5</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="admin-container">
+
+<div class="admin-header">
+
+<h1>👑 Admin Panel</h1>
+
+<p>
+FF Glory India V5 Control Panel
+</p>
+
+</div>
+
+<div class="admin-stats">
+
+<div class="stat-card">
+
+<h3>Total Users</h3>
+
+<h1 id="totalUsers">0</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Total Orders</h3>
+
+<h1 id="totalOrders">0</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Pending Payments</h3>
+
+<h1 id="pendingPayments">0</h1>
+
+</div>
+
+</div>
+
+<div class="payment-list">
+
+<h2>📋 Pending Payment Requests</h2>
+
+<div id="paymentContainer">
+
+<!-- Firebase Payment List -->
+
+</div>
+
+</div>
+<div class="search-box">
+
+<input
+type="text"
+id="searchUser"
+placeholder="Search User Email">
+
+<button id="searchBtn">
+🔍 Search
+</button>
+
+</div>
+
+<div id="userDetails">
+
+<h3>User Details</h3>
+
+<p>Email:
+<span id="userEmail">-</span>
+</p>
+
+<p>UTR:
+<span id="userUTR">-</span>
+</p>
+
+<p>Status:
+<span id="userStatus">Pending</span>
+</p>
+
+<img
+id="paymentImage"
+src=""
+style="width:250px;border-radius:10px;display:none;">
+
+</div>
+
+<div class="admin-actions">
+
+<select id="cardType">
+
+<option value="basic">
+Basic Card
+</option>
+
+<option value="premium">
+Premium Card
+</option>
+
+</select>
+
+<input
+type="number"
+id="cardAmount"
+placeholder="Card Amount">
+
+<button id="approveBtn">
+✅ Approve Payment
+</button>
+
+<button id="rejectBtn">
+❌ Reject Payment
+</button>
+
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script type="module" src="admin.js"></script>
+
+</body>
+</html>
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+window.location.href="index.html";
+return;
+
+}
+
+const payments = await getDocs(collection(db,"payments"));
+
+document.getElementById("pendingPayments").innerHTML = payments.size;
+
+const users = await getDocs(collection(db,"users"));
+
+document.getElementById("totalUsers").innerHTML = users.size;
+
+document.getElementById("totalOrders").innerHTML = payments.size;
+
+});
+
+</script>
+
+</div>
+
+</body>
+
+</html>
