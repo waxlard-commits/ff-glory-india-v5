@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Profile | FF Glory India V5</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="profile-container">
+
+<div class="profile-card">
+
+<img
+src="assets/profile.png"
+class="profile-image"
+id="profileImage">
+
+<h2 id="profileName">
+
+Loading...
+
+</h2>
+
+<p id="profileEmail">
+
+Loading Email...
+
+</p>
+
+<div class="profile-info">
+
+<div class="info-box">
+
+<h4>🌍 Server</h4>
+
+<p id="serverName">
+
+Not Selected
+
+</p>
+
+</div>
+
+<div class="info-box">
+
+<h4>🎮 Guild UID</h4>
+
+<p id="guildUID">
+
+Not Added
+
+</p>
+
+</div>
+
+<div class="info-box">
+
+<h4>🎟 Basic Cards</h4>
+
+<p id="basicCards">
+
+0
+
+</p>
+
+</div>
+
+<div class="info-box">
+
+<h4>💎 Premium Cards</h4>
+
+<p id="premiumCards">
+
+0
+
+</p>
+
+</div>
+</div>
+
+<div class="profile-buttons">
+
+<button onclick="window.location.href='dashboard.html'">
+🏠 Dashboard
+</button>
+
+<button onclick="window.location.href='history.html'">
+📜 History
+</button>
+
+<button onclick="logout()">
+🚪 Logout
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+doc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+window.location.href="index.html";
+return;
+
+}
+
+document.getElementById("profileName").innerHTML=user.email.split("@")[0];
+
+document.getElementById("profileEmail").innerHTML=user.email;
+
+const userRef=doc(db,"users",user.uid);
+
+const snap=await getDoc(userRef);
+
+if(snap.exists()){
+
+const data=snap.data();
+
+document.getElementById("serverName").innerHTML=data.server || "Not Selected";
+
+document.getElementById("guildUID").innerHTML=data.guild || "Not Added";
+
+document.getElementById("basicCards").innerHTML=data.basicCard || 0;
+
+document.getElementById("premiumCards").innerHTML=data.premiumCard || 0;
+
+}
+
+});
+
+window.logout=async()=>{
+
+await signOut(auth);
+
+window.location.href="index.html";
+
+};
+
+</script>
+
+</body>
+</html>
