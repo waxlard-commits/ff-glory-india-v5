@@ -1,7 +1,12 @@
 // ================================
 // FF Glory India V5 - app.js Part 1
 // ================================
+import { db } from "./firebase.js";
 
+import {
+  doc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
   auth
 } from "./firebase.js";
@@ -23,11 +28,18 @@ window.login = async function () {
 
   try {
 
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-    alert("Login Successful");
+await setDoc(doc(db, "users", userCredential.user.uid), {
+  email: email,
+  basicCard: 0,
+  premiumCard: 0,
+  role: "user"
+});
 
-    window.location.href = "dashboard.html";
+alert("Account Created Successfully");
+window.location.href = "dashboard.html";
+  
 
   } catch (error) {
 
