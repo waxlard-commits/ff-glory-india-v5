@@ -1,20 +1,24 @@
 // ================================
 // FF Glory India V5 - app.js Part 1
 // ================================
-import { db } from "./firebase.js";
+
+import { auth, db } from "./firebase.js";
+
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
   doc,
   setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import {
-  auth
-} from "./firebase.js";
 
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+// ================================
+// LOGIN
+// ================================
 
 window.login = async function () {
 
@@ -22,24 +26,17 @@ window.login = async function () {
   const password = document.getElementById("loginPassword").value;
 
   if (!email || !password) {
-    alert("Please enter Email & Password");
+    alert("Please Enter Email & Password");
     return;
   }
 
   try {
 
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth, email, password);
 
-await setDoc(doc(db, "users", userCredential.user.uid), {
-  email: email,
-  basicCard: 0,
-  premiumCard: 0,
-  role: "user"
-});
+    alert("Login Successful");
 
-alert("Account Created Successfully");
-window.location.href = "dashboard.html";
-  
+    window.location.href = "dashboard.html";
 
   } catch (error) {
 
@@ -48,8 +45,9 @@ window.location.href = "dashboard.html";
   }
 
 };
+
 // ================================
-// Signup
+// SIGNUP
 // ================================
 
 window.signup = async function () {
@@ -58,13 +56,28 @@ window.signup = async function () {
   const password = document.getElementById("signupPassword").value;
 
   if (!email || !password) {
-    alert("Please enter Email & Password");
+    alert("Please Enter Email & Password");
     return;
   }
 
   try {
 
-    await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+    await setDoc(
+      doc(db, "users", userCredential.user.uid),
+      {
+        email: email,
+        basicCard: 0,
+        premiumCard: 0,
+        role: "user"
+      }
+    );
 
     alert("Account Created Successfully");
 
@@ -78,25 +91,9 @@ window.signup = async function () {
 
 };
 // ================================
-// Login Check + Logout
+// LOGIN CHECK
 // ================================
 
-import {
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-window.logout = async function () {
-  try {
-    await signOut(auth);
-    alert("Logged Out Successfully");
-    window.location.href = "index.html";
-  } catch (error) {
-    alert(error.message);
-  }
-};
-
-// Agar user login hai to dashboard allow karo
 onAuthStateChanged(auth, (user) => {
 
   if (window.location.pathname.includes("dashboard.html")) {
@@ -108,3 +105,29 @@ onAuthStateChanged(auth, (user) => {
   }
 
 });
+
+// ================================
+// LOGOUT
+// ================================
+
+window.logout = async function () {
+
+  try {
+
+    await signOut(auth);
+
+    alert("Logged Out Successfully");
+
+    window.location.href = "index.html";
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+
+};
+
+// ================================
+// END OF APP.JS
+// ================================
