@@ -1,20 +1,336 @@
+/* =========================
+   FF GLORY INDIA V5
+   STYLE PART 1
+========================= */
+
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Poppins,sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
 body{
-  background:#0b1220;
-  color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+    background:#0b1220;
+    color:#fff;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
 }
 
-h1{
-  color:#ff9800;
-  font-size:32px;
+.main-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
+
+.login-card{
+    width:420px;
+    max-width:100%;
+    background:rgba(20,25,40,.95);
+    border-radius:20px;
+    padding:30px;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 0 30px rgba(0,0,0,.45);
+}
+
+.logo-box{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:12px;
+}
+
+.logo-box h1{
+    color:#ff9800;
+    font-size:30px;
+    font-weight:700;
+}
+
+.logo-box p{
+    color:#bfc7d5;
+    margin-top:6px;
+    font-size:14px;
+}
+/* =========================
+   LOGIN & SIGNUP TABS
+========================= */
+
+.tab-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.tab-box button{
+    flex:1;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#1a2338;
+    color:#fff;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.tab-box button.active{
+    background:#ff9800;
+    color:#111;
+}
+
+.tab-box button:hover{
+    background:#ff9800;
+    color:#111;
+}
+
+/* =========================
+   INPUT BOX
+========================= */
+
+#loginPage,
+#signupPage{
+    display:flex;
+    flex-direction:column;
+}
+
+#loginPage input,
+#signupPage input{
+
+    width:100%;
+    padding:14px;
+    margin-bottom:15px;
+
+    border:none;
+    outline:none;
+
+    border-radius:12px;
+
+    background:#101827;
+
+    color:#fff;
+
+    font-size:15px;
+
+}
+
+#loginPage input::placeholder,
+#signupPage input::placeholder{
+
+    color:#9ca3af;
+
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+#loginBtn,
+#signupBtn{
+
+    width:100%;
+    padding:15px;
+
+    border:none;
+    border-radius:12px;
+
+    background:#ff9800;
+
+    color:#111;
+
+    font-size:16px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+#loginBtn:hover,
+#signupBtn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 0 20px rgba(255,152,0,.45);
+
+}
+/* =========================
+   LINKS
+========================= */
+
+#loginPage p,
+#signupPage p{
+
+    text-align:center;
+    margin-top:18px;
+    color:#bfc7d5;
+    font-size:14px;
+
+}
+
+#loginPage a,
+#signupPage a{
+
+    color:#ff9800;
+    text-decoration:none;
+    font-weight:600;
+
+}
+
+#loginPage a:hover,
+#signupPage a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* =========================
+   GLASS EFFECT
+========================= */
+
+.login-card{
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    background:rgba(16,24,39,.88);
+
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+.login-card{
+
+    animation:fadeIn .7s ease;
+
+}
+
+.logo{
+
+    animation:fadeIn 1s ease;
+
+}
+
+button{
+
+    transition:.3s ease;
+
+      }
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width:768px){
+
+.main-container{
+    padding:20px;
+}
+
+.login-card{
+    width:100%;
+    padding:25px;
+}
+
+.logo{
+    width:80px;
+    height:80px;
+}
+
+.logo-box h1{
+    font-size:26px;
+}
+
+.logo-box p{
+    font-size:13px;
+}
+
+#loginBtn,
+#signupBtn{
+    padding:14px;
+    font-size:15px;
+}
+
+}
+
+/* =========================
+   ORANGE GLOW
+========================= */
+
+.login-card:hover{
+
+box-shadow:
+0 0 20px rgba(255,152,0,.20),
+0 0 40px rgba(255,152,0,.12);
+
+}
+
+/* INPUT FOCUS */
+
+input:focus{
+
+border:1px solid #ff9800;
+
+box-shadow:
+0 0 12px rgba(255,152,0,.35);
+
+}
+
+/* BUTTON ACTIVE */
+
+button:active{
+
+transform:scale(.98);
+
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+
+width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:#ff9800;
+border-radius:20px;
+
+}
+
+::-webkit-scrollbar-track{
+
+background:#0b1220;
+
+}
+
+/* =========================
+   END OF STYLE
+========================= */
