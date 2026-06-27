@@ -63,7 +63,7 @@ window.signup = async function () {
   try {
 
     const userCredential =
-      await createUserWithEmailAndPassword(
+      await signInWithEmailAndPassword(auth, email, password);
         auth,
         email,
         password
