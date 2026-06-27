@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
 
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FF Glory India V5 Dashboard</title>
+<title>FF Glory India Dashboard</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -23,11 +23,15 @@
 
 <div class="profile-box">
 
-<img src="assets/profile.png" id="profilePic">
+<img src="assets/profile.png" id="profilePic" alt="Profile">
 
-<span id="userName">
-Welcome User
-</span>
+<div>
+
+<h4 id="userName">Loading...</h4>
+
+<p>Guild Member</p>
+
+</div>
 
 </div>
 
@@ -38,7 +42,7 @@ Welcome User
 <h1>👋 Welcome</h1>
 
 <p>
-Manage your guild, payments and cards easily.
+Welcome to FF Glory India V5 Dashboard.
 </p>
 
 </div>
@@ -47,21 +51,17 @@ Manage your guild, payments and cards easily.
 
 <div class="info-card">
 
-<h3>Basic Cards</h3>
+<h3>🎟 Basic Cards</h3>
 
-<h1 id="basicCard">
-0
-</h1>
+<h1 id="basicCard">0</h1>
 
 </div>
 
 <div class="info-card">
 
-<h3>Premium Cards</h3>
+<h3>💎 Premium Cards</h3>
 
-<h1 id="premiumCard">
-0
-</h1>
+<h1 id="premiumCard">0</h1>
 
 </div>
 
@@ -69,50 +69,88 @@ Manage your guild, payments and cards easily.
 
 <div class="menu-grid">
 
-  <div class="menu-card" onclick="window.location.href='payment.html'">
-    <h3>💳 Payment</h3>
-    <p>Open QR & Pay</p>
+<div class="menu-card" onclick="window.location.href='payment.html'">
+
+<h3>💳 Payment</h3>
+
+<p>Open QR & Pay</p>
+
 </div>
 
 <div class="menu-card" onclick="window.location.href='history.html'">
-    <h3>📜 History</h3>
-    <p>View Orders</p>
-</div>
 
+<h3>📜 History</h3>
+
+<p>View Payment History</p>
+
+</div>
 <div class="menu-card" onclick="window.location.href='profile.html'">
-    <h3>👤 Profile</h3>
-    <p>Manage Account</p>
+
+<h3>👤 Profile</h3>
+
+<p>Manage Your Account</p>
+
 </div>
 
 <div class="menu-card" onclick="window.location.href='coupons.html'">
-    <h3>🎟 Coupons</h3>
-    <p>Redeem Codes</p>
+
+<h3>🎟 Coupons</h3>
+
+<p>Redeem Coupon Codes</p>
+
 </div>
 
 <div class="menu-card" onclick="window.location.href='support.html'">
-    <h3>🎫 Support</h3>
-    <p>Create Ticket</p>
-</div>
 
-<div class="menu-card" onclick="window.location.href='notifications.html'">
-    <h3>🔔 Notifications</h3>
-    <p>Latest Updates</p>
+<h3>🎫 Support</h3>
+
+<p>Create Support Ticket</p>
+
 </div>
 
 <div class="menu-card" onclick="window.location.href='settings.html'">
-    <h3>⚙️ Settings</h3>
-    <p>App Settings</p>
+
+<h3>⚙️ Settings</h3>
+
+<p>Manage Preferences</p>
+
 </div>
 
 <div class="menu-card logout-card" onclick="logout()">
-    <h3>🚪 Logout</h3>
-    <p>Sign Out</p>
-</div>
+
+<h3>🚪 Logout</h3>
+
+<p>Sign Out</p>
 
 </div>
 
-<script type="module" src="firebase.js"></script>
-<script type="module" src="app.js"></script>
+</div>
+
+<!-- Bottom Navigation -->
+
+<div class="bottom-nav">
+
+<a href="dashboard.html" class="active">
+🏠
+<span>Home</span>
+</a>
+
+<a href="payment.html">
+💳
+<span>Payment</span>
+</a>
+
+<a href="history.html">
+📜
+<span>History</span>
+</a>
+
+<a href="profile.html">
+👤
+<span>Profile</span>
+</a>
+
+</div>
 <script type="module">
 
 import { auth, db } from "./firebase.js";
@@ -127,43 +165,46 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// User Data Load
+onAuthStateChanged(auth, async (user) => {
 
-onAuthStateChanged(auth, async(user)=>{
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
 
-if(!user){
+  // Email show
+  document.getElementById("userName").textContent = user.email;
 
-window.location.href="index.html";
+  // Firestore data load
+  const userRef = doc(db, "users", user.uid);
+  const snap = await getDoc(userRef);
 
-return;
+  if (snap.exists()) {
+    const data = snap.data();
 
-}
+    document.getElementById("basicCard").textContent =
+      data.basicCard ?? 0;
 
-document.getElementById("userName").innerHTML=user.email;
-
-const userRef=doc(db,"users",user.uid);
-
-const snap=await getDoc(userRef);
-
-if(snap.exists()){
-
-const data=snap.data();
-
-document.getElementById("basicCard").innerHTML=data.basicCard || 0;
-
-document.getElementById("premiumCard").innerHTML=data.premiumCard || 0;
-
-}
+    document.getElementById("premiumCard").textContent =
+      data.premiumCard ?? 0;
+  }
 
 });
 
 // Logout
+window.logout = async () => {
 
-window.logout=async()=>{
+  try {
 
-await signOut(auth);
+    await signOut(auth);
 
-window.location.href="index.html";
+    window.location.href = "index.html";
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
 
 };
 
