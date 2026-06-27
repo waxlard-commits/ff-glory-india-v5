@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FF Glory India V5 Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<div class="top-bar">
+
+<h2>FF Glory India</h2>
+
+<div class="profile-box">
+
+<img src="assets/profile.png" id="profilePic">
+
+<span id="userName">
+Welcome User
+</span>
+
+</div>
+
+</div>
+
+<div class="welcome-card">
+
+<h1>👋 Welcome</h1>
+
+<p>
+Manage your guild, payments and cards easily.
+</p>
+
+</div>
+
+<div class="card-grid">
+
+<div class="info-card">
+
+<h3>Basic Cards</h3>
+
+<h1 id="basicCard">
+0
+</h1>
+
+</div>
+
+<div class="info-card">
+
+<h3>Premium Cards</h3>
+
+<h1 id="premiumCard">
+0
+</h1>
+
+</div>
+
+</div>
+
+<div class="menu-grid">
+
+  <div class="menu-card" onclick="window.location.href='payment.html'">
+    <h3>💳 Payment</h3>
+    <p>Open QR & Pay</p>
+</div>
+
+<div class="menu-card" onclick="window.location.href='history.html'">
+    <h3>📜 History</h3>
+    <p>View Orders</p>
+</div>
+
+<div class="menu-card" onclick="window.location.href='profile.html'">
+    <h3>👤 Profile</h3>
+    <p>Manage Account</p>
+</div>
+
+<div class="menu-card" onclick="window.location.href='coupons.html'">
+    <h3>🎟 Coupons</h3>
+    <p>Redeem Codes</p>
+</div>
+
+<div class="menu-card" onclick="window.location.href='support.html'">
+    <h3>🎫 Support</h3>
+    <p>Create Ticket</p>
+</div>
+
+<div class="menu-card" onclick="window.location.href='notifications.html'">
+    <h3>🔔 Notifications</h3>
+    <p>Latest Updates</p>
+</div>
+
+<div class="menu-card" onclick="window.location.href='settings.html'">
+    <h3>⚙️ Settings</h3>
+    <p>App Settings</p>
+</div>
+
+<div class="menu-card logout-card" onclick="logout()">
+    <h3>🚪 Logout</h3>
+    <p>Sign Out</p>
+</div>
+
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script type="module" src="app.js"></script>
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// User Data Load
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+window.location.href="index.html";
+
+return;
+
+}
+
+document.getElementById("userName").innerHTML=user.email;
+
+const userRef=doc(db,"users",user.uid);
+
+const snap=await getDoc(userRef);
+
+if(snap.exists()){
+
+const data=snap.data();
+
+document.getElementById("basicCard").innerHTML=data.basicCard || 0;
+
+document.getElementById("premiumCard").innerHTML=data.premiumCard || 0;
+
+}
+
+});
+
+// Logout
+
+window.logout=async()=>{
+
+await signOut(auth);
+
+window.location.href="index.html";
+
+};
+
+</script>
+
+</body>
+</html>
