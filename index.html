@@ -1,15 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FF Glory India V5</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FF Glory India V5</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
-<h1>FF Glory India V5</h1>
+<div class="main-container">
 
+<div class="login-card">
+
+<div class="logo-box">
+
+<img src="assets/logo.png" class="logo">
+
+<h1>FF Glory India</h1>
+
+<p>India's Professional Guild Panel V5</p>
+
+</div>
+
+<div class="tab-box">
+
+<button id="loginTab" class="active">
+Login
+</button>
+
+<button id="signupTab">
+Signup
+</button>
+
+</div>
+
+<!-- LOGIN -->
+
+<div id="loginPage">
+
+<input
+type="email"
+id="loginEmail"
+placeholder="Enter Email">
+
+<input
+type="password"
+id="loginPassword"
+placeholder="Enter Password">
+
+<button id="loginBtn">
+Login
+</button>
+
+<p>
+
+Forgot Password?
+
+</p>
+
+</div>
+
+<!-- SIGNUP -->
+
+<div id="signupPage" style="display:none;">
+  <input
+type="email"
+id="signupEmail"
+placeholder="Enter Email">
+
+<input
+type="password"
+id="signupPassword"
+placeholder="Create Password">
+
+<input
+type="password"
+id="confirmPassword"
+placeholder="Confirm Password">
+
+<button id="signupBtn">
+Create Account
+</button>
+
+<p>
+
+Already have an account?
+
+<a href="#" id="goLogin">
+Login
+</a>
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module" src="firebase.js"></script>
 <script type="module" src="app.js"></script>
+
+<script>
+
+const loginPage=document.getElementById("loginPage");
+const signupPage=document.getElementById("signupPage");
+
+const loginTab=document.getElementById("loginTab");
+const signupTab=document.getElementById("signupTab");
+
+loginTab.onclick=()=>{
+
+loginPage.style.display="block";
+signupPage.style.display="none";
+
+loginTab.classList.add("active");
+signupTab.classList.remove("active");
+
+};
+
+signupTab.onclick=()=>{
+
+loginPage.style.display="none";
+signupPage.style.display="block";
+
+signupTab.classList.add("active");
+loginTab.classList.remove("active");
+
+};
+
+document.getElementById("goLogin").onclick=function(e){
+
+e.preventDefault();
+
+loginPage.style.display="block";
+signupPage.style.display="none";
+
+loginTab.classList.add("active");
+signupTab.classList.remove("active");
+
+};
+
+  </script>
+  document.getElementById("loginBtn").onclick = () => {
+    login();
+};
+
+document.getElementById("signupBtn").onclick = () => {
+
+    const pass = document.getElementById("signupPassword").value;
+    const confirm = document.getElementById("confirmPassword").value;
+
+    if (pass !== confirm) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+    signup();
+
+};
+
+</script>
+
 </body>
 </html>
