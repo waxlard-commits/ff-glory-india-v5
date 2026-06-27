@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Payment - FF Glory India V5</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="payment-card">
+
+<h1>💳 Payment</h1>
+
+<p>
+Scan QR or tap the QR to pay using PhonePe
+</p>
+
+<a href="upi://pay">
+
+<img
+src="assets/qr.png"
+id="paymentQR"
+class="payment-qr">
+
+</a>
+
+<h2>MD AKIF REZA</h2>
+
+<input
+type="text"
+id="utr"
+placeholder="Enter UTR Number">
+
+<input
+type="file"
+id="paymentScreenshot"
+accept="image/*">
+
+  <button id="submitPayment">
+    📤 Submit Payment
+</button>
+
+<div class="payment-status">
+
+<h3>Status</h3>
+
+<p id="paymentStatus">
+
+⏳ Waiting for Payment
+
+</p>
+
+</div>
+
+<a href="dashboard.html">
+
+<button class="backBtn">
+
+⬅ Back to Dashboard
+
+</button>
+
+</a>
+
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script type="module" src="app.js"></script>
+
+<script type="module">
+
+import { auth, db, storage } from "./firebase.js";
+
+import { onAuthStateChanged }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+
+doc,
+
+setDoc
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+
+ref,
+
+uploadBytes,
+
+getDownloadURL
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+let currentUser = null;
+
+onAuthStateChanged(auth,(user)=>{
+
+currentUser=user;
+
+});
+
+document.getElementById("submitPayment").onclick = async()=>{
+
+if(!currentUser){
+
+alert("Please login first");
+
+return;
+
+}
+
+const utr=document.getElementById("utr").value;
+
+const file=document.getElementById("paymentScreenshot").files[0];
+
+if(!utr || !file){
+
+alert("Enter UTR & Upload Screenshot");
+
+return;
+
+}
+
+const storageRef=ref(storage,"payments/"+currentUser.uid);
+
+await uploadBytes(storageRef,file);
+
+const screenshotURL=await getDownloadURL(storageRef);
+
+await setDoc(doc(db,"payments",currentUser.uid),{
+
+email:currentUser.email,
+
+utr:utr,
+
+status:"Pending",
+
+screenshot:screenshotURL,
+
+time:new Date().toISOString()
+
+});
+
+document.getElementById("paymentStatus").innerHTML="⏳ Waiting for Admin Approval";
+
+alert("Payment Submitted Successfully");
+
+};
+
+</script>
+
+</body>
+</html>
