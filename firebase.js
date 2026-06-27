@@ -4,12 +4,13 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebas
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.firebasestorage.app",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDs3k_Gp2mxCqQ8h0Gtwt6hIlfgDzXZkj0",
+  authDomain: "ffindiaglory.firebaseapp.com",
+  projectId: "ffindiaglory",
+  storageBucket: "ffindiaglory.firebasestorage.app",
+  messagingSenderId: "983153794186",
+  appId: "1:983153794186:web:971e3cd0aad617027b2173",
+  measurementId: "G-KBZ177HPQ8"
 };
 
 const app = initializeApp(firebaseConfig);
